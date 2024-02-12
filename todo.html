@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>To-Do List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        #content {
+            background-color: #ffffff;
+            border: 15px solid #ac1414;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"] {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .add {
+            padding: 10px 20px;
+            background-color: #2b9c14;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .add:hover {
+            background-color: #1e7c0f;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .delete {
+            padding: 5px 10px;
+            background-color: #d90a0a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .delete:hover {
+            background-color: #972222;
+        }
+
+        .button10 {
+            padding: 10px 20px;
+            background-color: #28b849;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+
+        .button10:hover {
+            background-color: #1e7c0f;
+        }
+
+        footer {
+            background-color: #f2f2f2;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="New Task">
+        <input type="date" id="dueDateInput">
+        <input type="time" id="dueTimeInput">
+        <button class="add" id="addtask" onclick="addTask()">Add Task</button><br><br><br>
+
+        <div>
+            <button class="button10" onclick="filterTasks('all')">All Tasks</button><br><br><br>
+            <button class="button10" onclick="filterTasks('incomplete')">Incomplete Tasks</button><br><br><br>
+            <button class="button10" onclick="filterTasks('completed')">Completed Tasks</button><br><br><br>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <div>
+        <button class="button10" id="logout-btn" onclick="logout()">
+            <i class="fa fa-sign-out"></i> Logout
+        </button>
+    </div>
+
+    <footer>
+        &copy; All rights are reserved
+    </footer>
+
+
+    <script>
+        function filterTasks(filterType) {
+            var taskList = document.getElementById("taskList");
+            var tasks = taskList.getElementsByTagName("li");
+
+            for (var i = 0; i < tasks.length; i++) {
+                var task = tasks[i];
+                var checkbox = task.querySelector("input[type='checkbox']");
+                var isCompleted = checkbox.checked;
+
+                if (filterType === 'all') {
+                    task.style.display = "block";
+                } else if (filterType === 'incomplete') {
+                    if (!isCompleted) {
+                        task.style.display = "block";
+                    } else {
+                        task.style.display = "none";
+                    }
+                } else if (filterType === 'completed') {
+                    if (isCompleted) {
+                        task.style.display = "block";
+                    } else {
+                        task.style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function addTask() {
+            var taskInput = document.getElementById("taskInput");
+            var dueDateInput = document.getElementById("dueDateInput");
+            var dueTimeInput = document.getElementById("dueTimeInput");
+            var taskList = document.getElementById("taskList");
+
+
+            var newTask = document.createElement("li");
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            var taskName = document.createElement("span");
+            var dueDate = document.createElement("span");
+            taskName.innerText = taskInput.value;
+            dueDate.innerText = "   Due: " + dueDateInput.value + " at " + dueTimeInput.value;
+
+            newTask.appendChild(checkbox);
+            newTask.appendChild(taskName);
+            newTask.appendChild(dueDate);
+            var deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.className = "delete";
+            deleteButton.onclick = function () {
+
+                taskList.removeChild(newTask);
+            };
+            newTask.appendChild(deleteButton);
+
+
+            taskList.appendChild(newTask);
+
+            taskInput.value = "";
+            dueDateInput.value = "";
+
+
+
+        }
+
+        function logout() {
+            window.location.href = "user.html";
+        }
+    </script>
+</body>
+
+</html>
